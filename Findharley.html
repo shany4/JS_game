@@ -1,0 +1,231 @@
+<!--Assignment 3!!! this is my first time to use js programming a game.-->
+<!--The idea of the game is from "Spice Labs Memory"-->
+<!--I learnd Javascript from my programming class and w3school, js.au369.com and the dissussion on A2L help me a lot-->
+<!--the background music is from "Royalty-Free Music"-->
+
+<!--Di Bai 2014 June 15-->
+
+
+
+<html><!--star the html-->
+    <body><!--open the body here. The main content is inside the body. Also, I put css and javascript in the body-->
+
+        <style type="text/css">/* css code star here*/
+         /*this is my css code*/
+		 /*css code set the viewer of the body, paragraph, table as well as input button*/
+         body
+         {
+           background-color: #000000;
+           padding: 30px;
+         }
+         p
+         {
+           text-align: center;
+           font-size: 60px;
+           font-family: sans-serif;
+		   color: #ffffff;
+         }
+         table
+         {
+           margin: auto;
+         }
+         input[type="button"]
+         {
+           width: 300px;
+           font-family: sans-serif;
+           font-size: 30px;
+		   padding: 15px;
+         }
+        </style><!--My css code stop here-->
+
+        <p><!--Start the paragraph and set the align to center-->
+            Find Harley
+            <table><!--Start the table here -->
+                <!--All contents of the game will be inside the table-->
+                <tr>
+                    <td>
+                        <script language="JavaScript">
+                         //My js code start here
+                         // Containor init with all game pictures' suffix.
+                         var map = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8];
+                         var user = [];
+                         // Temporary array for randomlize the 'map' containor.
+                         var temparray = [];
+                         // Array to store click event.
+                         var clickarray = [0,0];
+                         // variables for game play.
+                         var ticker; 
+						 var second; 
+						 var min; 
+						 var ctr; 
+						 var id; 
+						 var click; 
+						 var finish;
+
+                         // Initalize the game.
+                         var init = function()
+                         {
+                             clearTimeout(id);
+                             for (i = 0; i <= 15 ;i++)//for loop from 0 to 15, represent 16 images all flip back
+                             {
+                                 user[i] = 0;
+                             }
+                             ticker = 0;
+                             min = 0;
+                             sec = 0;
+                             ctr = 0;
+                             click = true;
+                             finish = 0;
+                             document.a.b.value = "";
+                             scramble();
+                             time();
+                             for (i = 0; i <= 15; i++)
+                             {
+                                 document.a[('img'+i)].src = "image0.png";
+                             }
+                         }
+
+
+                         // Randomlized the map that stores game images.
+                         var scramble = function()
+                         {
+                             for (z = 0; z < 3; z++)
+                             {
+                                 for (x = 0; x <= 15; x++)
+                                 {
+                                     temparray[0] = Math.floor(Math.random()*16);
+                                     temparray[1] = map[temparray[0]];
+                                     temparray[2] = map[x];
+                                     map[x] = temparray[1];
+                                     map[temparray[0]] = temparray[2];
+                                 }
+                             }
+                         }
+
+                         // Display the real image of the section after clicking an unshown image.
+                         var showimage = function(but)
+                         {
+                             if (click)
+                             {
+                                 click = false;
+                                 document.a[('img'+but)].src = 'image'+map[but]+'.png';
+                                 if (ctr == 0)
+                                 {
+                                     ctr++;
+                                     clickarray[0] = but;
+                                     click = true;
+                                 }
+                                 else
+                                 {
+                                     clickarray[1] = but;
+                                     ctr = 0;
+                                     setTimeout(returntoold, 600);
+                                 }
+                             }
+                         }
+
+                         // Fuction to determine the logic of the game,
+                         // such as, whether two images match with each
+                         // other.
+                         var returntoold = function()
+                         {
+                             if ((clickarray[0] == clickarray[1]) && (!user[clickarray[0]]))
+                             { // click on same image
+                                 document.a[('img'+clickarray[0])].src = "image0.png";
+                                 click = true;
+                             }
+                             else
+                             {
+                                 if (map[clickarray[0]] != map[clickarray[1]])
+                                 { // does not match
+                                     if (user[clickarray[0]] == 0)
+                                     {
+                                         document.a[('img'+clickarray[0])].src = "image0.png";
+                                     }
+                                     if (user[clickarray[1]] == 0)
+                                     {
+                                         document.a[('img'+clickarray[1])].src = "image0.png";
+                                     }
+                                 }
+                                 if (map[clickarray[0]] == map[clickarray[1]])
+                                 { // matched
+                                     if (user[clickarray[0]] == 0&&user[clickarray[1]] == 0)
+                                     {
+                                         finish++;
+                                     }
+                                     user[clickarray[0]] = 1;
+                                     user[clickarray[1]] = 1;
+                                 }
+                                 if (finish >= 8)
+                                 { // Win, alert come out and then back to init
+                                     alert('You Win!!!');
+                                     init();
+                                 }
+                                 else
+                                 { // Not Win, continue
+                                     click = true;
+                                 }
+                             }
+                         }
+						 
+						 // Run the clock and update it every second.
+                         var time = function()
+                         {
+                             min = Math.floor(ticker/60);
+                             sec = (ticker-(min*60))+'';
+                             if(sec.length == 1)
+                             {
+                                 sec = "0"+sec
+                             }
+                             ticker++;
+                             document.a.b.value = min+":"+sec;
+                             id = setTimeout(time, 1000);
+                         }
+
+                        </script>
+						
+						
+						
+						
+                        <form name="a"><!--pass the data to the server-->
+						<!--contain the button element-->
+                            <table><!--Creat a new table inside the form-->
+                                <script language="javascript">
+                                 // Dynamically create the DOM for the game.
+                                 for (r = 0; r <= 3; r++)
+                                 {
+                                     document.write('<tr>');
+                                     for (c = 0; c <= 3; c++)
+                                     {
+                                         document.write('<td align="center">');
+                                         document.write('<a href="javascript:showimage('+((4*r)+c)+')" onClick="document.f.b.focus()">');
+                                         document.write('<img src="image0.png" name="img'+((4*r)+c)+'" border="0">');
+                                         document.write('</a></td>');
+                                     }
+                                     document.write('</tr>');
+                                 }
+                                 //all my javascript code finished!!!!! so sweet!
+                                </script>
+                            </table><!--My table close here-->
+                            <br>
+
+                            <center><!--Set the input button, in the center of the page and shows text "start game", click it back to int.-->
+                                <input type="button" value="Start Game " name="b" onClick="init()">
+                            </center>
+                        </form>
+                    </td>
+                </tr>
+            </table><!--close table here-->
+        </p><!--close my paragraph-->
+		
+		 <audio autoplay="autoplay" loop="loop">  <!--set up the background music--> 
+          <source src = "Easy Lemon.mp3" type="audio/mp3"/>
+         </audio>
+		
+    </body><!--close my body-->
+</html><!--close my html-->
+
+
+
+<!-- Tanks for watch my code -->
+<!-- Di Bai : ) -->
